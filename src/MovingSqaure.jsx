@@ -32,6 +32,7 @@ const MovingSquare = ({ gridColors, setGridColors, position, setPosition }) => {
 			socket.send(direction.toUpperCase());
 		} else {
 			console.warn("WebSocket is not open yet.");
+			toast.warn("WebSocket is not open yet.");
 		}
 	};
 
