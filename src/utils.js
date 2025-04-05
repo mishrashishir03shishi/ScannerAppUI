@@ -1,7 +1,7 @@
 const GRID_ROWS = 10;
 const GRID_COLS = 15;
-const SOCKET_URL = "ws://localhost:8080/ws/canvas";
-const API_URL = "http://localhost:8080/canvas";
+const SOCKET_URL = "ws://13.235.77.139:8080/ws/canvas";
+const API_URL = "http://13.235.77.139:8080/canvas";
 
 const directionOffsets = {
 	up: { x: 0, y: -1 },

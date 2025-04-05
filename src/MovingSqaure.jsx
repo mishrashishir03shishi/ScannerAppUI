@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 import { GRID_ROWS, GRID_COLS, SOCKET_URL, directionOffsets } from "./utils";
 
+const CELL_SIZE = 40;
+
 const MovingSquare = ({ gridColors, setGridColors, position, setPosition }) => {
 	const socketRef = React.useRef(null);
+	const [glowCell, setGlowCell] = useState(null);
 
 	useEffect(() => {
 		// Establish WebSocket connection
@@ -18,6 +21,8 @@ const MovingSquare = ({ gridColors, setGridColors, position, setPosition }) => {
 				newGrid[data.position.y][data.position.x] = data.colorCode;
 				return newGrid;
 			});
+			setGlowCell(`${data.position.y}-${data.position.x}`);
+			setTimeout(() => setGlowCell(null), 1000);
 		};
 		socketRef.current = ws;
 	}, []);
@@ -68,28 +73,40 @@ const MovingSquare = ({ gridColors, setGridColors, position, setPosition }) => {
 		<div
 			className='relative w-[450px] h-[300px] border border-black grid'
 			style={{
-				gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`,
-				gridTemplateRows: `repeat(${GRID_ROWS}, 1fr)`,
+				width: `${GRID_COLS * CELL_SIZE}px`,
+				height: `${GRID_ROWS * CELL_SIZE}px`,
+				gridTemplateColumns: `repeat(${GRID_COLS}, ${CELL_SIZE}px)`,
+				gridTemplateRows: `repeat(${GRID_ROWS}, ${CELL_SIZE}px)`,
 			}}
 		>
 			{gridColors.map((row, rowIndex) =>
-				row.map((cell, colIndex) => (
-					<div
-						key={`${rowIndex}-${colIndex}`}
-						className={`border border-gray-300 w-full h-full ${
-							cell === 0
-								? "bg-green-500"
-								: cell === 1
-								? "bg-red-500"
-								: "bg-white"
-						}`}
-					></div>
-				))
+				row.map((cell, colIndex) => {
+					const isGlow = glowCell === `${rowIndex}-${colIndex}`;
+					return (
+						<div
+							key={`${rowIndex}-${colIndex}`}
+							className={`border border-gray-300 w-full h-full ${
+								cell === 0
+									? "bg-green-500"
+									: cell === 1
+									? "bg-red-500"
+									: "bg-white"
+							} ${isGlow ? "animate-glowPulse" : ""}`}
+						></div>
+					);
+				})
 			)}
 			<motion.div
-				className='absolute w-[30px] h-[30px] rounded border-4 border-black'
-				animate={{ left: `${position.x * 30}px`, top: `${position.y * 30}px` }}
-				transition={{ duration: 0.5 }}
+				className='absolute rounded border-4 border-black'
+				style={{
+					width: `${CELL_SIZE}px`,
+					height: `${CELL_SIZE}px`,
+				}}
+				animate={{
+					left: `${position.x * CELL_SIZE}px`,
+					top: `${position.y * CELL_SIZE}px`,
+				}}
+				transition={{ duration: 1 }}
 			></motion.div>
 		</div>
 	);
