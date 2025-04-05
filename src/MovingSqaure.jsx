@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-import { GRID_ROWS, GRID_COLS, SOCKET_URL, directionOffsets } from "./utils";
+import {
+	GRID_ROWS,
+	GRID_COLS,
+	SOCKET_URL,
+	directionOffsets,
+	CELL_SIZE,
+} from "./utils";
 
-const CELL_SIZE = 40;
-
-const MovingSquare = ({ gridColors, setGridColors, position, setPosition }) => {
-	const socketRef = React.useRef(null);
+const MovingSquare = ({
+	gridColors,
+	setGridColors,
+	position,
+	setPosition,
+	socketRef,
+}) => {
 	const [glowCell, setGlowCell] = useState(null);
 
 	useEffect(() => {

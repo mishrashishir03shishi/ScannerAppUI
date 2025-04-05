@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import MovingSquare from "./MovingSqaure";
 import "./App.css";
@@ -17,6 +17,7 @@ function App() {
 	const [header, setHeader] = useState("🔬 Microscope");
 	const [error, setError] = useState("");
 	const [keyPressed, setKeyPressed] = useState(false);
+	const socketRef = useRef(null);
 
 	useEffect(() => {
 		const handleKeyPress = () => {
@@ -40,7 +41,6 @@ function App() {
 				return response.json();
 			})
 			.then((data) => {
-				console.log("data fetched", data);
 				setGridColors(data.grid);
 				setPosition({
 					x: data.currentPosition.x,
@@ -79,6 +79,7 @@ function App() {
 							setGridColors={setGridColors}
 							position={position}
 							setPosition={setPosition}
+							socketRef={socketRef}
 						/>
 					</div>
 					<motion.p
@@ -88,6 +89,11 @@ function App() {
 						transition={{ duration: 1, delay: 0.3 }}
 						whileTap={{ scale: 0.95, y: 2 }}
 						onClick={() => {
+							const socket = socketRef.current;
+							if (socket && socket.readyState !== WebSocket.OPEN) {
+								toast.error("Connection lost. Please reload to continue.");
+								return;
+							}
 							fetch(`${API_URL}/clear`)
 								.then((response) => {
 									console.log("response", response);

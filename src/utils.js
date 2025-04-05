@@ -1,5 +1,6 @@
 const GRID_ROWS = 10;
 const GRID_COLS = 15;
+const CELL_SIZE = 40;
 const SOCKET_URL = "ws://13.235.77.139:8080/ws/canvas";
 const API_URL = "http://13.235.77.139:8080/canvas";
 
@@ -10,4 +11,11 @@ const directionOffsets = {
 	right: { x: 1, y: 0 },
 };
 
-export { GRID_ROWS, GRID_COLS, SOCKET_URL, API_URL, directionOffsets };
+export {
+	GRID_ROWS,
+	GRID_COLS,
+	SOCKET_URL,
+	API_URL,
+	directionOffsets,
+	CELL_SIZE,
+};
