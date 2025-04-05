@@ -21,7 +21,6 @@ function App() {
 
 	useEffect(() => {
 		const handleKeyPress = () => {
-			// setMounted(true);
 			setKeyPressed(true);
 		};
 
@@ -60,7 +59,7 @@ function App() {
 
 	return (
 		<div className='h-screen min-w-screen bg-gradient-to-br from-purple-800 via-indigo-900 to-black flex flex-col items-center justify-center text-white font-mono relative overflow-hidden'>
-			<ToastContainer />
+			<ToastContainer autoClose={2500} />
 			{/* Title */}
 			<motion.h1
 				className='text-5xl md:text-6xl font-bold mb-8 z-10 text-center tracking-widest'
