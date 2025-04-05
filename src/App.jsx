@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import MovingSquare from "./MovingSqaure";
 import "./App.css";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 import { API_URL, GRID_ROWS, GRID_COLS } from "./utils";
 
@@ -108,9 +108,10 @@ function App() {
 										y: 0,
 									});
 								})
-								.catch((error) =>
-									console.error("Error fetching initial data:", error)
-								);
+								.catch((error) => {
+									console.error("Error fetching initial data:", error);
+									toast.error("Internal Server Error. Error clearing the grid");
+								});
 						}}
 					>
 						Reset
